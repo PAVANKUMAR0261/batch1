@@ -1,0 +1,20 @@
+#--create and load the data from bigquery public dataset
+
+CREATE TABLE IF NOT EXISTS pavan0261.PAVAN_DATASET.HEALTH_CARE as select * FROM `bigquery-public-data.america_health_rankings.ahr` LIMIT 1000
+
+#--creating new table with partition  with creation_date cloumn
+
+create table PAVAN_DATASET.HEALTH_CARE_02 (edition INT64,
+report_type STRING,measure_name STRING,state_name STRING,
+subpopulation STRING,value FLOAT64,lower_ci FLOAT64,
+upper_ci FLOAT64,source STRING,source_date STRING);
+
+#--load data from non partition table to new partition table
+
+insert into PAVAN_DATASET.HEALTH_CARE_02 select * from PAVAN_DATASET.HEALTH_CARE
+
+#-- bellow select queries will show the diff b/w partition and non parition table
+
+select * from PAVAN_DATASET.HEALTH_CARE_02 where source_date='2015-2019'
+
+#
